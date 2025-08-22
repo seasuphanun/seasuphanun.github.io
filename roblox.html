@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เกมง่ายๆ ด้วย HTML5</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // ผู้เล่น
+        let player = {
+            x: 50,
+            y: 50,
+            width: 20,
+            height: 20,
+            speed: 5
+        };
+
+        // การควบคุม
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight') player.x += player.speed;
+            if (event.key === 'ArrowLeft') player.x -= player.speed;
+            if (event.key === 'ArrowUp') player.y -= player.speed;
+            if (event.key === 'ArrowDown') player.y += player.speed;
+
+            // จำกัดขอบเขต
+            if (player.x < 0) player.x = 0;
+            if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
+            if (player.y < 0) player.y = 0;
+            if (player.y > canvas.height - player.height) player.y = canvas.height - player.height;
+        });
+
+        // อัปเดตและวาด
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // ล้างหน้าจอ
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(player.x, player.y, player.width, player.height); // วาดผู้เล่น
+            requestAnimationFrame(gameLoop); // ลูปต่อเนื่อง
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>
